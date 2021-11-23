@@ -9,9 +9,15 @@ ENV PYTHONUNBUFFERED 1
 
 # copy requirement file to docker
 COPY ./requirements.txt /requirements.txt
-
+# add package on container
+RUN apk add --update --no-cache postgresql-client
+# install temp dependencies
+RUN apk add --update --no-cache --virtual .tmp-build-deps \
+    gcc libc-dev linux-headers postgresql-dev
 # install packages in requirement file
 RUN pip install -r /requirements.txt
+# lease temp dependencies
+RUN apk del .tmp-build-deps
 
 
 #############################################
