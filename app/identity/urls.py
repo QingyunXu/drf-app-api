@@ -5,5 +5,6 @@ app_name = 'identity'
 
 urlpatterns = [
     path('register/', views.RegisterUserView.as_view(), name='register'),
-    path('token/', views.CreateTokenView.as_view(), name='token')
+    path('login/', views.LoginCreateTokenView.as_view(), name='login'),
+    path('profile/', views.ManageUserView.as_view(), name='profile')
 ]
