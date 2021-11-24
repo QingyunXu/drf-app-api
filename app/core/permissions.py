@@ -5,7 +5,7 @@ class IsAdminOrReadOnly(BasePermission):
 
     def has_permission(self, request, view):
         """Check if the user has permission to write
-        
+
         Parameters
         ----------
         reauest

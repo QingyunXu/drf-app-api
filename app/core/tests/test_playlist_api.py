@@ -98,7 +98,7 @@ class PrivatePlayListApiTests(TestCase):
 
     def test_create_play_list_exists(self):
         """Test creating a new playlist"""
-        payload = {'name': 'Soothing'}
+        payload = {'name': 'playlist-name'}
         self.client.post(PLAYLIST_URL, payload)
         # check the payload exists in DB
         exists = PlayList.objects.filter(

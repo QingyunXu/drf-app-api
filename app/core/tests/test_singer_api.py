@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core import models
 from core.models import Singer
 
 
@@ -70,7 +69,6 @@ class PrivateSingerApiTests(TestCase):
         # status code, should be 200
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # the return name should be same
-        print(response.data)
         self.assertEqual(response.data.get('name'), 'Singer four')
 
     def test_create_singer_invalid(self):
