@@ -4,15 +4,15 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
-# create user create URL
+# create reverse URL
 RETISTER_USER_URL = reverse('identity:register')
 TOKEN_URL = reverse('identity:login')
 PROFILE_URL = reverse('identity:profile')
 
 
-def crate_example_user(**params):
-    """create example users for test"""
-    return get_user_model().objects.create_user(**params)
+def crate_example_user(email='test@emailaddress.com',
+                       password='Test.1234', **params):
+    return get_user_model().objects.create_user(email, password, **params)
 
 
 class PublicUserApiTests(TestCase):

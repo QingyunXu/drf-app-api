@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, \
     BaseUserManager, PermissionsMixin
 
@@ -74,3 +75,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Display string type of user """
         return self.email
+
+
+class PlayList(models.Model):
+    """User's play list tag"""
+    name = models.CharField(max_length=255, blank=False)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self) -> str:
+        return self.name

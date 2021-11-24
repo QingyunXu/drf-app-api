@@ -28,3 +28,4 @@ class UserAdminConfig(UserAdmin):
 
 # retister admin model to user
 admin.site.register(models.User, UserAdminConfig)
+admin.site.register(models.PlayList)
