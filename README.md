@@ -10,6 +10,8 @@ docker-compose run --rm app sh -c "python manage.py test && flake8"
 
 ## Getting started
 
+[Get Docker](https://docs.docker.com/get-docker/)
+
 To start project, run:
 
 ```sh

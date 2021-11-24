@@ -85,5 +85,13 @@ class PlayList(models.Model):
         on_delete=models.CASCADE
     )
 
-    def __str__(self) -> str:
+    def __str__(self):
+        return self.name
+
+
+class Singer(models.Model):
+    """Singer model"""
+    name = models.CharField(max_length=255, blank=False)
+
+    def __str__(self):
         return self.name

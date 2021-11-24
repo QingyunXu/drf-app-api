@@ -6,19 +6,19 @@ from rest_framework.test import APIClient
 
 from core import models
 from core.models import PlayList
-from song.serializers import PlayListSerializer
+from song.serializers.playlistSerializers import PlayListSerializer
 
 from .test_identity_api import crate_example_user
 
 # create playlist URL
-PLAY_LIST_URL = reverse('song:playlist-list')
+PLAYLIST_URL = reverse('song:playlist-list')
 
 
 class PlayListStr(TestCase):
-    """Test the play list string representation"""
+    """Test the playlist string representation"""
 
-    def test_tag_str(self):
-        """Test the play list string representation"""
+    def test_playlist_str(self):
+        """Test the playlist string representation"""
         pl = models.PlayList.objects.create(
             user=crate_example_user(),
             name='Focus'
@@ -32,14 +32,14 @@ class PlayListStr(TestCase):
 
 
 class PublicPlayListApiTests(TestCase):
-    """Test the publicly available play list API"""
+    """Test the publicly available playlist API"""
 
     def setUp(self):
         self.client = APIClient()
 
     def test_login_required(self):
         """Test that login is required for retrieving playlist"""
-        response = self.client.get(PLAY_LIST_URL)
+        response = self.client.get(PLAYLIST_URL)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
@@ -49,7 +49,7 @@ class PublicPlayListApiTests(TestCase):
 
 
 class PrivatePlayListApiTests(TestCase):
-    """Test the authorized user tags API"""
+    """Test the authorized user playlist API"""
 
     def setUp(self):
         self.user = crate_example_user()
@@ -65,9 +65,9 @@ class PrivatePlayListApiTests(TestCase):
         PlayList.objects.create(user=self.user, name='Focus')
         PlayList.objects.create(user=self.user, name='Running')
 
-        response = self.client.get(PLAY_LIST_URL)
+        response = self.client.get(PLAYLIST_URL)
 
-        # play list returns in the order of name,reverse
+        # playlist returns in the order of name,reverse
         pl = PlayList.objects.all().order_by('-name')
         serializer = PlayListSerializer(pl, many=True)
         # status code, should be 200
@@ -75,7 +75,7 @@ class PrivatePlayListApiTests(TestCase):
         # api response data should be same as serializer returns
         self.assertEqual(response.data, serializer.data)
 
-    def test_tags_limited_to_user(self):
+    def test_playlist_limited_to_user(self):
         """Test that playlist returned are for the authenticated user"""
         user2 = crate_example_user(
             email='user@emailaddress.com', password='Test.1234')
@@ -83,7 +83,7 @@ class PrivatePlayListApiTests(TestCase):
         # pl belongs to self user
         pl = PlayList.objects.create(user=self.user, name='Soothing')
 
-        response = self.client.get(PLAY_LIST_URL)
+        response = self.client.get(PLAYLIST_URL)
 
         # status code, should be 200
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -97,9 +97,9 @@ class PrivatePlayListApiTests(TestCase):
     ###########################################################
 
     def test_create_play_list_exists(self):
-        """Test creating a new play list"""
+        """Test creating a new playlist"""
         payload = {'name': 'Soothing'}
-        self.client.post(PLAY_LIST_URL, payload)
+        self.client.post(PLAYLIST_URL, payload)
         # check the payload exists in DB
         exists = PlayList.objects.filter(
             user=self.user,
@@ -108,8 +108,8 @@ class PrivatePlayListApiTests(TestCase):
         self.assertTrue(exists)
 
     def test_create_play_list_invalid(self):
-        """Test creating a new play list with invalid name"""
+        """Test creating a new playlist with invalid name"""
         payload = {'name': ''}
-        res = self.client.post(PLAY_LIST_URL, payload)
+        res = self.client.post(PLAYLIST_URL, payload)
         # status code should be 400 bad request
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

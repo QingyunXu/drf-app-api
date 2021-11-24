@@ -2,8 +2,10 @@ from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import PlayList
-from song import serializers
+from core.models import PlayList, Singer
+from core.permissions import IsAdminOrReadOnly
+from song.serializers.playlistSerializers import PlayListSerializer
+from song.serializers.singerSerializers import SingerSerializer
 
 
 class PlayListViewSet(viewsets.GenericViewSet,
@@ -13,7 +15,7 @@ class PlayListViewSet(viewsets.GenericViewSet,
     queryset = PlayList.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.PlayListSerializer
+    serializer_class = PlayListSerializer
 
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
@@ -22,3 +24,10 @@ class PlayListViewSet(viewsets.GenericViewSet,
     def perform_create(self, serializer):
         """Create a new tag"""
         serializer.save(user=self.request.user)
+
+
+class SingerViewSet(viewsets.ModelViewSet):
+    queryset = Singer.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAdminOrReadOnly,)
+    serializer_class = SingerSerializer
