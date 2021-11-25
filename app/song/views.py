@@ -6,8 +6,7 @@ from core.models import PlayList, Singer, Song
 from core.permissions import IsAdminOrReadOnly
 from song.serializers.playlistSerializers import PlaylistSerializer,\
     PlaylistDetailsSerializer, WritePlaylistSerializer
-from song.serializers.singerSerializers import SingerSerializer,\
-    ListSingerSerializer
+from song.serializers.singerSerializers import SingerSerializer
 from song.serializers.songSerializers import SongSerializer, \
     SongDetailsSerializer
 
@@ -17,11 +16,6 @@ class SingerViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAdminOrReadOnly,)
     serializer_class = SingerSerializer
-
-    def get_serializer_class(self):
-        if self.action in 'list':
-            return ListSingerSerializer
-        return SingerSerializer
 
 
 class SongViewSet(viewsets.ModelViewSet):
