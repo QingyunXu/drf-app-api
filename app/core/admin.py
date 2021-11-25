@@ -30,3 +30,4 @@ class UserAdminConfig(UserAdmin):
 admin.site.register(models.User, UserAdminConfig)
 admin.site.register(models.PlayList)
 admin.site.register(models.Singer)
+admin.site.register(models.Song)

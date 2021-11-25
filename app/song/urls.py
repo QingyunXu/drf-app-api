@@ -8,6 +8,7 @@ app_name = 'song'
 router = DefaultRouter()
 router.register('playlist', views.PlayListViewSet)
 router.register('singer', views.SingerViewSet)
+router.register('song', views.SongViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

@@ -2,10 +2,11 @@ from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import PlayList, Singer
+from core.models import PlayList, Singer, Song
 from core.permissions import IsAdminOrReadOnly
 from song.serializers.playlistSerializers import PlayListSerializer
 from song.serializers.singerSerializers import SingerSerializer
+from song.serializers.songSerializers import SongSerializer
 
 
 class PlayListViewSet(viewsets.GenericViewSet,
@@ -31,3 +32,10 @@ class SingerViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAdminOrReadOnly,)
     serializer_class = SingerSerializer
+
+
+class SongViewSet(viewsets.ModelViewSet):
+    queryset = Song.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAdminOrReadOnly,)
+    serializer_class = SongSerializer

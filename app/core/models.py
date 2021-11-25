@@ -95,3 +95,15 @@ class Singer(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Song(models.Model):
+    """Song model"""
+    title = models.CharField(max_length=255, blank=False)
+    length = models.DecimalField(max_digits=4, decimal_places=2)
+    release = models.DateTimeField()
+    playlists = models.ManyToManyField('PlayList')
+    singers = models.ManyToManyField('Singer')
+
+    def __str__(self) -> str:
+        return self.title
