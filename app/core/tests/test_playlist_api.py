@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 
 from core import models
 from core.models import PlayList
-from song.serializers.playlistSerializers import PlayListSerializer
+from song.serializers.playlistSerializers import PlaylistSerializer
 
 from .test_identity_api import crate_example_user
 
@@ -68,8 +68,8 @@ class PrivatePlayListApiTests(TestCase):
         response = self.client.get(PLAYLIST_URL)
 
         # playlist returns in the order of name,reverse
-        pl = PlayList.objects.all().order_by('-name')
-        serializer = PlayListSerializer(pl, many=True)
+        pl = PlayList.objects.all().order_by('name')
+        serializer = PlaylistSerializer(pl, many=True)
         # status code, should be 200
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # api response data should be same as serializer returns

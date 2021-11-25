@@ -5,10 +5,13 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Song
-from song.serializers.songSerializers import SongSerializer
 
 # create playlist URL
 SONG_URL = reverse('song:song-list')
+
+
+def detail_url(id):
+    return reverse('song:song-list', args=[id])
 
 
 def sample_song(**params):
@@ -49,13 +52,3 @@ class PrivateRecipeApiTests(TestCase):
         )
         self.client = APIClient()
         self.client.force_authenticate(self.superuser)
-
-    def test_get_song(self):
-        sample_song()
-        sample_song()
-        response = self.client.get(SONG_URL)
-        songs = Song.objects.all().order_by('id')
-        serializer = SongSerializer(songs, many=True)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, serializer.data)
